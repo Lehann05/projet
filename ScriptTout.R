@@ -1,5 +1,5 @@
 #Définir le directory
-setwd("~/BIO500/series_temporelles/series_temporelles")
+
 
 #Ouvrir les bibliothèques nécessaires 
 library(tidyr)
@@ -10,6 +10,31 @@ source('Eval1.R')
 source('Eval2.R')
 source('Eval3.R')
 source('Eval4.R')
+source('Eval5.R')
+
+# Chemin vers ton dossier principal (remplace par ton vrai chemin)
+dossier_comb <- "~/projet/series_temporelles"
+
+# Liste de tous les fichiers CSV sauf ceux du dossier 'taxonomie'
+liste_fichiers <- list.files(path = dossier_comb, 
+                             pattern = "\\.csv$", 
+                             recursive = TRUE, 
+                             full.names = TRUE)
+
+# Exclure ceux qui sont dans le dossier 'taxonomie'
+liste_fichiers <- liste_fichiers[!grepl("taxonomie.csv", liste_fichiers)]
+
+# Lire et combiner tous les CSV
+donnees_combinees <- lapply(liste_fichiers, read.csv) %>%
+  bind_rows()
+
+# Sauvegarder dans un nouveau CSV
+write.csv(donnees_combinees, "donnees_combinees.csv", row.names = FALSE)
+
+cat("CSV combiné créé avec succès !\n")
+
+View(donnees_combinees)
+
 
 #Dossier de sortie pour la sauvegarde des données nettoyées
 output_dir <- "~/BIO500/series_temporelles/series_temporelles/series_nettoyées"
