@@ -13,6 +13,7 @@ source('Eval5.R')
 source('Combine.R')
 source('Cor_geom.R')
 source('Cor_license.R')
+source('enl_col_vide.R')
 
 #Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
@@ -29,59 +30,24 @@ donnees_comb <- corriger_geom(dossier_comb)
 # Étape 3 - Corriger license
 donnees_comb <- corriger_license(donnees_comb)
 
+# Étape 4 - Enlever les colonnes vides
+donnees_comb <- enlever_colonnes_vides(donnees_comb)
+
 # Étape 4 - Valider
 View(donnees_comb)
 
-#Boucle pour traiter et enregistrer les fichiers
-for (file in file_list) {
-  #Lire le fichier et le mettre dans un dataframe
-  df <- read.csv(file, stringsAsFactors = FALSE)
-  
-  #Si la colonne existe --> liste de nombre
-  if ("values" %in% names(df)) {
-    df$values <- lapply(df$values, convertion_array_list)
-  }
-  if ("years" %in% names(df)) {
-    if (is.character(df$years)) {
-      df$years <- lapply(df$years, convertion_array_list)
-    }
-  }
-  
-  #Appliquer la fonction force_list si la fonction précédente n'a pas fonctionnée
-  df <- force_list(df, "values")
-  df <- force_list(df, "years")
-  
-  #Si la colonne geom existe, séparer les coordonnées
-  if ("geom" %in% names(df)) {
-    # Vérifier la structure de la colonne 'geom' avant de la séparer
-    
-    #Appliquer la fonction separer_coords pour séparer les coordonnées
-    coords_list <- lapply(df$geom, separer_coords)
-    #Créer deux nouvelles colonnes avec la longitude et la latitude
-    df$longitude <- sapply(coords_list, `[`, 1)  
-    df$latitude <- sapply(coords_list, `[`, 2)  
-    #Supprimer la colonne geom
-    df$geom <- NULL  # Supprimer la colonne 'geom' après avoir extrait les coordonnées
-  }
-  
-  #Si la colonne geom existe, séparer les coordonnées
-  if ("geometry" %in% names(df)) {
-    # Vérifier la structure de la colonne 'geom' avant de la séparer
-    
-    #Appliquer la fonction separer_coords pour séparer les coordonnées
-    coords_list <- lapply(df$geom, separer_coords)
-    #Créer deux nouvelles colonnes avec la longitude et la latitude
-    df$longitude <- sapply(coords_list, `[`, 1)  
-    df$latitude <- sapply(coords_list, `[`, 2)  
-    #Supprimer la colonne geom
-    df$geometry <- NULL  # Supprimer la colonne 'geom' après avoir extrait les coordonnées
-  }
-  
-  #unnest() --> Séparer les lignes 
-  if ("values" %in% names(df) && "years" %in% names(df)) {
-    df <- unnest(df, cols = c(values, years))
-  }
-  
+#Faire la même chose pour le csv taxonomie 
+# Étape 1 - Ouvrir
+taxonomie <- read.csv('taxonomie.csv')
+
+# Étape 2 - Enlever les colonnes vides
+taxonomie <- enlever_colonnes_vides(taxonomie)
+
+# Étape 3 - Valider
+View(taxonomie)
+
+
+
   #Remplacer les NULL par NA dans tout le dataframe
   df <- NoNull(df)  
   
