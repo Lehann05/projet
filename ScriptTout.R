@@ -46,6 +46,9 @@ taxonomie <- enlever_colonnes_vides(taxonomie)
 # Étape 3 - Valider
 View(taxonomie)
 
+#Unnest les colonnes years et values
+donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
+donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
 
 
   #Remplacer les NULL par NA dans tout le dataframe
