@@ -1,17 +1,8 @@
-# Fonction pour convertir une chaîne de caractères en liste de nombres
-convertion_array_list <- function(x) {
-  if (is.na(x) || x == "" || x == "NULL") {  
-    return(NA)  
-  }
-  x <- gsub("\\[|\\]", "", x)  # Supprimer les crochets
-  num_values <- as.numeric(unlist(strsplit(x, ",")))  
-  return(num_values)
-}
-
+# Fonction pour dérouler nos colonnes years et values et les avoir sous forme de caractères 
 unnest_column <- function(df, colname, sep = ",") {
   # Vérifie si la colonne existe dans le dataframe
   if (!colname %in% names(df)) {
-    stop("La colonne spécifiée n'existe pas dans le dataframe.")
+    stop("La colonne n'existe pas")
   }
   
   # Enlever les crochets et les espaces supplémentaires dans la colonne
