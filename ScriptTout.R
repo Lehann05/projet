@@ -1,10 +1,14 @@
-#Définir le directory
+# Définir le directory
 
-#Ouvrir les bibliothèques nécessaires 
+# Ouvrir les bibliothèques nécessaires 
 library(tidyr)
 library(dplyr)
 
-#Charger les scripts avec source
+# Installer et charger pbapply pour avoir une barre de progression
+# install.packages("pbapply")
+library(pbapply)
+
+# Charger les scripts avec source
 source('Eval1.R')
 source('Eval2.R')
 source('Eval3.R')
@@ -15,10 +19,10 @@ source('Cor_geom.R')
 source('Cor_license.R')
 source('enl_col_vide.R')
 
-#Utiliser la fonction qui combine les csv (sauf taxonomie)
+# Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
 combiner_csv(dossier_principal = "~/projet/series_temporelles",
-             dossier_a_exclure = "taxonomie.csv",
+             sans_taxonomie = "taxonomie.csv",
              nom_sortie = "dossier_comb.csv")
 
 dossier_comb <- read.csv('dossier_comb.csv')
@@ -36,7 +40,7 @@ donnees_comb <- enlever_colonnes_vides(donnees_comb)
 # Étape 4 - Valider
 View(donnees_comb)
 
-#Faire la même chose pour le csv taxonomie 
+# Faire la même chose pour le csv taxonomie 
 # Étape 1 - Ouvrir
 taxonomie <- read.csv('taxonomie.csv')
 
@@ -57,30 +61,17 @@ donnees_comb <- justePositif(donnees_comb)
 donnees_comb <- NoNull(donnees_comb)
 
 # Gérer les données géom (séparation des latitudes et des longitudes)
-
-# Installer et charger pbapply
-# install.packages("pbapply")
-library(pbapply)
-
-# Appliquer avec une barre de progression pour un vecteur
+# Utiliser la fonction separer_coords. Ajout d'une barre de progression
+# Ça prend à peu près 5 minutes
 coords_list <- pblapply(donnees_comb$geom, separer_coords)
 
-# Transformer en colonnes
+# Créer la colonne longitude et latitude
 donnees_comb$longitude <- sapply(coords_list, `[`, 1)
 donnees_comb$latitude  <- sapply(coords_list, `[`, 2)
 
-# Supprimer la colonne geom
+# Enlever la colonne geom 
 donnees_comb$geom <- NULL
 
-# Appliquer la fonction separer_coords pour séparer les coordonnées
-coords_list <- lapply(donnees_comb$geom, separer_coords)
-
-#Créer deux nouvelles colonnes avec la longitude et la latitude
-donnees_comb$longitude <- sapply(coords_list, `[`, 1)  
-donnees_comb$latitude <- sapply(coords_list, `[`, 2)  
-
-#Supprimer la colonne geom
-donnees_comb$geom <- NULL  # Supprimer la colonne 'geom' après avoir extrait les coordonnées
 
 
 
