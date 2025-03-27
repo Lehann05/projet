@@ -1,5 +1,3 @@
-
-
 # Fonction pour remplacer NULL par NA
 NoNull <- function(df) {
   df[] <- lapply(df, function(col) {
