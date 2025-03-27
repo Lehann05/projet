@@ -46,12 +46,23 @@ taxonomie <- enlever_colonnes_vides(taxonomie)
 # Étape 3 - Valider
 View(taxonomie)
 
-#Unnest les colonnes years et values
+# Unnest les colonnes years et values
 donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
 donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
 
+# Vérifier que tout est positifs (sauf les données géographique)
+donnees_comb <- justePositif(donnees_comb)
+  
+# Transformer les null en NA
+donnees_comb <- NoNull(donnees_comb)
 
-  #Remplacer les NULL par NA dans tout le dataframe
+# Gérer les données géom (séparation des latitudes et des longitudes)
+donnees_comb <- separer_coords(donnees_comb)
+
+
+#------------------------------------
+
+#Remplacer les NULL par NA dans tout le dataframe
   df <- NoNull(df)  
   
   #Assurer qu'il n'y a pas de valeurs négatives dans les colonnes numériques sauf pour les coordonnées
@@ -72,7 +83,7 @@ donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
   #Sauvegarder le dataframe dans un fichier csv
   output_file <- file.path(output_dir, basename(file))
   write.csv(df, output_file, row.names = FALSE)
-}
+
 
 
 # Liste des fichiers CSV dans le répertoire, excluant 'taxonomie.csv'
