@@ -60,70 +60,19 @@ donnees_comb <- NoNull(donnees_comb)
 donnees_comb <- separer_coords(donnees_comb)
 
 
-#------------------------------------
 
-#Remplacer les NULL par NA dans tout le dataframe
-  df <- NoNull(df)  
-  
-  #Assurer qu'il n'y a pas de valeurs négatives dans les colonnes numériques sauf pour les coordonnées
-  df <- justePositif(df)  
-  
-  #Si des colonnes sont des listes, les convertir en chaines de caractère
-  #Facilite le transfert en csv
-  df[] <- lapply(df, function(col) {
-    if (is.list(col)) {
-      col <- sapply(col, function(x) {
-        if (is.null(x)) return(NA)
-        if (length(x) > 1) return(paste(x, collapse = ";"))
-        return(as.character(x))
-      })
-    }
-    return(col)
-  })
-  #Sauvegarder le dataframe dans un fichier csv
-  output_file <- file.path(output_dir, basename(file))
-  write.csv(df, output_file, row.names = FALSE)
+# Appliquer la fonction separer_coords pour séparer les coordonnées
+coords_list <- lapply(donnees_comb$geom, separer_coords)
+
+#Créer deux nouvelles colonnes avec la longitude et la latitude
+donnees_comb$longitude <- sapply(coords_list, `[`, 1)  
+donnees_comb$latitude <- sapply(coords_list, `[`, 2)  
+
+#Supprimer la colonne geom
+donnees_comb$geom <- NULL  # Supprimer la colonne 'geom' après avoir extrait les coordonnées
 
 
 
-# Liste des fichiers CSV dans le répertoire, excluant 'taxonomie.csv'
-file_list <- list.files(path = "~/BIO500/series_temporelles/series_temporelles/series_nettoyées", 
-                        pattern = "*.csv", full.names = TRUE)
-
-# Exclure explicitement le fichier 'taxonomie.csv' de la liste
-file_list <- file_list[!grepl("taxonomie.csv$", file_list)]
-
-# Lire tous les fichiers CSV
-df_list <- lapply(file_list, function(file) {
-  df <- read.csv(file, stringsAsFactors = FALSE)
-  return(df)
-})
-
-# Trouver les colonnes communes
-all_columns <- unique(unlist(lapply(df_list, colnames)))
-
-# Aligner les colonnes pour chaque dataframe
-df_list <- lapply(df_list, function(df) {
-  # Ajouter les colonnes manquantes avec des NA
-  missing_cols <- setdiff(all_columns, colnames(df))
-  df[missing_cols] <- NA
-  # Réorganiser les colonnes pour qu'elles soient dans le même ordre
-  df <- df[, all_columns]
-  return(df)
-})
-
-
-
-# Assurez-vous que les deux colonnes existent
-if ("lisense" %in% names(combined_df) && "license" %in% names(combined_df)) {
-  # Identifier les valeurs non numériques dans 'lisense' (celles qui ne sont pas purement numériques)
-  non_numeric_values <- !grepl("^[0-9]+$", combined_df$lisense)  # Regex qui vérifie que la valeur n'est pas uniquement numérique
-  
-  # Transférer les valeurs non numériques dans 'license'
-  combined_df$license[non_numeric_values] <- combined_df$lisense[non_numeric_values]
-  
-  combined_df$lisense <- NULL
-}
 
 
 
