@@ -57,9 +57,20 @@ donnees_comb <- justePositif(donnees_comb)
 donnees_comb <- NoNull(donnees_comb)
 
 # Gérer les données géom (séparation des latitudes et des longitudes)
-donnees_comb <- separer_coords(donnees_comb)
 
+# Installer et charger pbapply
+# install.packages("pbapply")
+library(pbapply)
 
+# Appliquer avec une barre de progression pour un vecteur
+coords_list <- pblapply(donnees_comb$geom, separer_coords)
+
+# Transformer en colonnes
+donnees_comb$longitude <- sapply(coords_list, `[`, 1)
+donnees_comb$latitude  <- sapply(coords_list, `[`, 2)
+
+# Supprimer la colonne geom
+donnees_comb$geom <- NULL
 
 # Appliquer la fonction separer_coords pour séparer les coordonnées
 coords_list <- lapply(donnees_comb$geom, separer_coords)
