@@ -11,18 +11,26 @@ source('Eval3.R')
 source('Eval4.R')
 source('Eval5.R')
 source('Combine.R')
+source('Cor_geom.R')
+source('Cor_license.R')
 
 #Utiliser la fonction qui combine les csv (sauf taxonomie)
-
+# Étape 1 - Combiner
 combiner_csv(dossier_principal = "~/projet/series_temporelles",
              dossier_a_exclure = "taxonomie.csv",
              nom_sortie = "dossier_comb.csv")
 
 dossier_comb <- read.csv('dossier_comb.csv')
-View(dossier_comb)
 
-#Liste des fichiers CSV
-file_list <- list.files(path = "~/BIO500/series_temporelles/series_temporelles", pattern = "*.csv", full.names = TRUE)
+
+# Étape 2 - Corriger geom
+donnees_comb <- corriger_geom(dossier_comb)
+
+# Étape 3 - Corriger license
+donnees_comb <- corriger_license(donnees_comb)
+
+# Étape 4 - Valider
+View(donnees_comb)
 
 #Boucle pour traiter et enregistrer les fichiers
 for (file in file_list) {
@@ -98,9 +106,6 @@ for (file in file_list) {
 }
 
 
-# Définir le répertoire de travail
-setwd("~/BIO500/series_temporelles/series_temporelles/series_nettoyées")
-
 # Liste des fichiers CSV dans le répertoire, excluant 'taxonomie.csv'
 file_list <- list.files(path = "~/BIO500/series_temporelles/series_temporelles/series_nettoyées", 
                         pattern = "*.csv", full.names = TRUE)
@@ -127,12 +132,7 @@ df_list <- lapply(df_list, function(df) {
   return(df)
 })
 
-# Combiner tous les fichiers en un seul dataframe
-combined_df <- do.call(rbind, df_list)
 
-# Afficher les premières lignes du dataframe combiné
-head(combined_df)
-View(combined_df)
 
 # Assurez-vous que les deux colonnes existent
 if ("lisense" %in% names(combined_df) && "license" %in% names(combined_df)) {
@@ -145,11 +145,7 @@ if ("lisense" %in% names(combined_df) && "license" %in% names(combined_df)) {
   combined_df$lisense <- NULL
 }
 
-# Afficher
-View(combined_df)
 
-# Si nécessaire, enregistrer le dataframe combiné dans un nouveau fichier CSV
-write.csv(combined_df, "données_combinées.csv", row.names = FALSE)
 
 
 
