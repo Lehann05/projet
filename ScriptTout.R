@@ -24,7 +24,7 @@ source('creer_table.R')
 
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
-combiner_csv(dossier_principal = "~/projet/series_temporelles",
+combiner_csv(dossier_principal = "~/series_temporelles",
              sans_taxonomie = "taxonomie.csv",
              nom_sortie = "dossier_comb.csv")
 
