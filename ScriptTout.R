@@ -75,7 +75,7 @@ donnees_comb$latitude  <- sapply(coords_list, `[`, 2)
 # Enlever la colonne geom 
 donnees_comb$geom <- NULL
 
-
+#Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
 
 
 
