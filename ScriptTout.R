@@ -77,6 +77,10 @@ donnees_comb$geom <- NULL
 
 #Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
 
+#1ere table -> dataframe taxonomie dans données initiales
+
+#2e table -> sources à partir de donnees_comb
+division_table(donnees_comb, c(original_source, title, publisher, license, owner))
 
 
 
