@@ -3,6 +3,7 @@
 # Ouvrir les bibliothèques nécessaires 
 library(tidyr)
 library(dplyr)
+library(RSQLite)
 
 # Installer et charger pbapply pour avoir une barre de progression
 # install.packages("pbapply")
@@ -18,6 +19,8 @@ source('Combine.R')
 source('Cor_geom.R')
 source('Cor_license.R')
 source('enl_col_vide.R')
+source('division_table.R')
+source('creer_table.R')
 
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
