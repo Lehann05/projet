@@ -88,11 +88,11 @@ abondance_inject <- division_table(donnees_comb, c(id, observed_scientific_name,
 
 
 #Création des dataframes avec RSQLite
-#Connection à utiliser
+#1. Connection à utiliser
 con <- dbConnect(SQLite(), dbname="réseau.db")
 
-#Commande création des dataframes
-#1. taxonomie
+#2. Commande création des dataframes
+#2.1. taxonomie
 creer_taxo <-
   "CREATE TABLE taxonomie(
     observed_scientific_name    VARCHAR(75),
@@ -109,7 +109,7 @@ creer_taxo <-
     PRIMARY KEY(observed_scientific_name)
   );"
 
-#2. sources
+#2.2. sources
 creer_sources <- 
   "CREATE TABLE sources(
     original_source         VARCHAR(50),
@@ -120,7 +120,7 @@ creer_sources <-
     PRIMARY KEY(title)
   );"
 
-#3. abondance
+#2.3. abondance
 creer_abondance <-
   "CREATE TABLE abondance(
     id                          INTEGER AUTOINCREMENT,
@@ -136,9 +136,15 @@ creer_abondance <-
     FOREIGN KEY(title)  REFERENCES sources(title)
   );"
 
+#3. Création et injection des données dans les tables avec fonction creer_table
+#3.1. taxonomie
+creer_table(con, creer_taxo, "taxonomie", taxonomie)
 
+#3.2. sources
+creer_table(con, creer_sources, "sources", sources_inject)
 
-
+#3.3. abondance
+creer_abondance(con, creer_abondance, "abondance", abondance_inject)
 
 
 
