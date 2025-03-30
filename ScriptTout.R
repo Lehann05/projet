@@ -87,6 +87,58 @@ sources_inject <- division_table(donnees_comb, c(original_source, title, publish
 abondance_inject <- division_table(donnees_comb, c(id, observed_scientific_name, years, unit, values, title, longitude, latitude))
 
 
+#Création des dataframes avec RSQLite
+#Connection à utiliser
+con <- dbConnect(SQLite(), dbname="réseau.db")
+
+#Commande création des dataframes
+#1. taxonomie
+creer_taxo <-
+  "CREATE TABLE taxonomie(
+    observed_scientific_name    VARCHAR(75),
+    valid_scientific_name       VARCHAR(75),
+    rank                        VARCHAR(20),
+    vernacular_fr               VARCHAR(55),
+    kingdom                     VARCHAR(15),
+    phylum                      VARCHAR(15),
+    class                       VARCHAR(30),
+    order                       VARCHAR(35),
+    family                      VARCHAR(35),
+    genus                       VARCHAR(35),
+    species                     VARCHAR(55),
+    PRIMARY KEY(observed_scientific_name)
+  );"
+
+#2. sources
+creer_sources <- 
+  "CREATE TABLE sources(
+    original_source         VARCHAR(50),
+    title                   VARCHAR(500),
+    publisher               VARCHAR(10),
+    license                 VARCHAR(50),
+    owner                   VARCHAR(10),
+    PRIMARY KEY(title)
+  );"
+
+#3. abondance
+creer_abondance <-
+  "CREATE TABLE abondance(
+    id                          INTEGER AUTOINCREMENT,
+    observed_scientific_name    VARCHAR(75),
+    years                       INTEGER,
+    unit                        VARCHAR(75),
+    values                      INTEGER,
+    title                       VARCHAR(500),
+    longitude                   INTEGER,
+    latitude                    INTEGER,
+    PRIMARY KEY(id),
+    FOREIGN KEY(observed_scientific_name)  REFERENCES taxonomie(observed_scientific_name),
+    FOREIGN KEY(title)  REFERENCES sources(title)
+  );"
+
+
+
+
 
 
 
