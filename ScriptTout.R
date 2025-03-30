@@ -146,7 +146,6 @@ creer_table(con, creer_sources, "sources", sources_inject)
 #3.3. abondance
 creer_abondance(con, creer_abondance, "abondance", abondance_inject)
 
-
-
+#Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
 
 
