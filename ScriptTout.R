@@ -113,18 +113,18 @@ creer_taxo <-
 #2.2. sources
 creer_sources <- 
   "CREATE TABLE sources(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
     original_source         VARCHAR(50),
     title                   VARCHAR(500),
     publisher               VARCHAR(10),
     license                 VARCHAR(50),
-    owner                   VARCHAR(10),
-    PRIMARY KEY(title)
+    owner                   VARCHAR(10)
   );"
 
 #2.3. abondance
 creer_abondance <-
   "CREATE TABLE abondance(
-    id                          INTEGER AUTOINCREMENT,
+    id                          INTEGER PRIMARY KEY AUTOINCREMENT,
     observed_scientific_name    VARCHAR(75),
     years                       INTEGER,
     unit                        VARCHAR(75),
@@ -132,9 +132,8 @@ creer_abondance <-
     title                       VARCHAR(500),
     longitude                   INTEGER,
     latitude                    INTEGER,
-    PRIMARY KEY(id),
     FOREIGN KEY(observed_scientific_name)  REFERENCES taxonomie(observed_scientific_name),
-    FOREIGN KEY(title)  REFERENCES sources(title)
+    FOREIGN KEY(source_id)  REFERENCES sources(id)
   );"
 
 #3. Création et injection des données dans les tables avec fonction creer_table
