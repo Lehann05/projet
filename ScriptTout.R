@@ -43,16 +43,6 @@ donnees_comb <- enlever_colonnes_vides(donnees_comb)
 # Étape 4 - Valider
 View(donnees_comb)
 
-# Faire la même chose pour le csv taxonomie 
-# Étape 1 - Ouvrir
-taxonomie_inject <- read.csv('taxonomie.csv')
-
-# Étape 2 - Enlever les colonnes vides
-taxonomie_inject <- enlever_colonnes_vides(taxonomie)
-
-# Étape 3 - Valider
-View(taxonomie_inject)
-
 # Unnest les colonnes years et values
 donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
 donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
@@ -81,10 +71,11 @@ donnees_comb$geom <- NULL
 #1ere table -> dataframe taxonomie_inject
 
 #2e table -> sources à partir de donnees_comb
-sources_inject <- division_table(donnees_comb, c(original_source, title, publisher, license, owner))
+sources_inject <- division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
 
+View(sources_inject)
 #3e table -> abondance à partir de donnees_comb
-abondance_inject <- division_table(donnees_comb, c(id, observed_scientific_name, years, unit, values, title, longitude, latitude))
+abondance_inject <- division_table(donnees_comb, c('id', 'observed_scientific_name', 'years', 'unit', 'values', 'title', 'longitude', 'latitude'))
 
 
 #Création des dataframes avec RSQLite
