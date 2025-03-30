@@ -9,19 +9,19 @@ combiner_csv <- function(dossier_principal, exclusion, nom_sortie) {
                                full.names = TRUE)
   
   # Exclure ceux du dossier à exclure
-  liste_fichiers2 <- liste_fichiers[!grepl(exclusion, liste_fichiers)]
+  liste_fichiers <- liste_fichiers[!grepl(exclusion, liste_fichiers)]
   
   # Vérifier s'il reste des fichiers 
-  if(length(liste_fichiers2) == 0){
+  if(length(liste_fichiers) == 0){
     stop("Pas trouvé de fichier")
   }
   
   # Lire et combiner
-  donnees_combinees <- lapply(liste_fichiers2, read.csv) %>%
+  donnees_combinees <- lapply(liste_fichiers, read.csv) %>%
     bind_rows()
   
   # Exporter le résultat
   write.csv(donnees_combinees, file = nom_sortie, row.names = FALSE)
   
-  cat(paste0("Succès : ", length(liste_fichiers2), " fichiers combinés dans '", nom_sortie, "'\n"))
+  cat(paste0("Succès : ", length(liste_fichiers), " fichiers combinés dans '", nom_sortie, "'\n"))
 }
