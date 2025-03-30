@@ -19,6 +19,11 @@ unnest_column <- function(df, colname, sep = ",") {
   # Convertir les années en nombres
   df_unnested[[colname]] <- as.numeric(df_unnested[[colname]])  # Conversion en numérique
   
+  # Vérification 
+  if (is.numeric(df_unnested[[colname]])) {
+    cat("Les valeurs sont numériques.\n")
+  }
+  
   return(df_unnested)
 }
 
