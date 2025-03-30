@@ -78,9 +78,13 @@ donnees_comb$geom <- NULL
 #Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
 
 #1ere table -> dataframe taxonomie dans données initiales
+taxonomie_inject <-  read.table(file= "~/series_temporelles/taxonomie.csv", header=T, sep=",")
 
 #2e table -> sources à partir de donnees_comb
-division_table(donnees_comb, c(original_source, title, publisher, license, owner))
+sources_inject <- division_table(donnees_comb, c(original_source, title, publisher, license, owner))
+
+#3e table -> abondance à partir de donnees_comb
+abondance_inject
 
 
 
