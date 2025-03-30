@@ -24,9 +24,9 @@ source('creer_table.R')
 
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
-combiner_csv(dossier_principal = "~/series_temporelles",
-             sans_taxonomie = "taxonomie.csv",
-             nom_sortie = "dossier_comb.csv")
+combiner_csv(dossier_principal = "~/series_temporelles", 
+             exclusion = "taxonomie.csv", 
+             nom_sortie = "dossier_comb")
 
 dossier_comb <- read.csv('dossier_comb.csv')
 
