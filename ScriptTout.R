@@ -28,7 +28,6 @@ taxonomie <- read.csv('taxonomie.csv')
 
 colnames(taxonomie)[colnames(taxonomie) == "order"] <- "taxo_order"
 
-View(taxonomie)
 
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
@@ -38,7 +37,6 @@ combiner_csv(dossier_principal = "./series_temporelles",
 
 dossier_comb <- read.csv('dossier_comb.csv')
 
-View(dossier_comb)
 
 # Étape 2 - Corriger geom
 donnees_comb <- corriger_geom(dossier_comb)
@@ -74,6 +72,9 @@ donnees_comb$latitude  <- sapply(coords_list, `[`, 2)
 # Enlever la colonne geom 
 donnees_comb$geom <- NULL
 
+# Modification du nom de la colonne values parce qu'elle cause problème aussi 
+
+colnames(donnees_comb)[colnames(donnees_comb) == "values"] <- "valeurs"
 
 #Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
 
@@ -83,7 +84,7 @@ taxonomie_inject <- taxonomie
 #2e table -> sources à partir de donnees_comb
 sources_inject <- division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
 
-View(sources_inject)
+
 #3e table -> abondance à partir de donnees_comb
 abondance_inject <- division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'values', 'title', 'longitude', 'latitude'))
 
@@ -128,7 +129,7 @@ creer_abondance <-
     observed_scientific_name    VARCHAR(75),
     years                       INTEGER,
     unit                        VARCHAR(75),
-    values                      INTEGER,
+    valeurs                      INTEGER,
     title                       VARCHAR(500),
     longitude                   INTEGER,
     latitude                    INTEGER,
@@ -144,7 +145,7 @@ creer_table(con, creer_taxo, "taxonomie", taxonomie_inject)
 creer_table(con, creer_sources, "sources", sources_inject)
 
 #3.3. abondance
-creer_abondance(con, creer_abondance, "abondance", abondance_inject)
+creer_table(con, creer_abondance, "abondance", abondance_inject)
 
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
 
