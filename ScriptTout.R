@@ -22,14 +22,23 @@ source('enl_col_vide.R')
 source('division_table.R')
 source('creer_table.R')
 
+# Modifier le nom de la colonne order dans taxonomie, parce qu'il est problématique 
+
+taxonomie <- read.csv('taxonomie.csv')
+
+colnames(taxonomie)[colnames(taxonomie) == "order"] <- "taxo_order"
+
+View(taxonomie)
+
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
 combiner_csv(dossier_principal = "./series_temporelles", 
              exclusion = "taxonomie.csv", 
-             nom_sortie = "dossier_comb")
+             nom_sortie = "dossier_comb.csv")
 
 dossier_comb <- read.csv('dossier_comb.csv')
 
+View(dossier_comb)
 
 # Étape 2 - Corriger geom
 donnees_comb <- corriger_geom(dossier_comb)
@@ -69,13 +78,14 @@ donnees_comb$geom <- NULL
 #Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
 
 #1ere table -> dataframe taxonomie_inject
+taxonomie_inject <- taxonomie 
 
 #2e table -> sources à partir de donnees_comb
 sources_inject <- division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
 
 View(sources_inject)
 #3e table -> abondance à partir de donnees_comb
-abondance_inject <- division_table(donnees_comb, c('id', 'observed_scientific_name', 'years', 'unit', 'values', 'title', 'longitude', 'latitude'))
+abondance_inject <- division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'values', 'title', 'longitude', 'latitude'))
 
 
 #Création des dataframes avec RSQLite
@@ -93,7 +103,7 @@ creer_taxo <-
     kingdom                     VARCHAR(15),
     phylum                      VARCHAR(15),
     class                       VARCHAR(30),
-    order                       VARCHAR(35),
+    taxo_order                  VARCHAR(35),
     family                      VARCHAR(35),
     genus                       VARCHAR(35),
     species                     VARCHAR(55),
