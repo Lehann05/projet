@@ -45,13 +45,13 @@ View(donnees_comb)
 
 # Faire la même chose pour le csv taxonomie 
 # Étape 1 - Ouvrir
-taxonomie <- read.csv('taxonomie.csv')
+taxonomie_inject <- read.csv('taxonomie.csv')
 
 # Étape 2 - Enlever les colonnes vides
-taxonomie <- enlever_colonnes_vides(taxonomie)
+taxonomie_inject <- enlever_colonnes_vides(taxonomie)
 
 # Étape 3 - Valider
-View(taxonomie)
+View(taxonomie_inject)
 
 # Unnest les colonnes years et values
 donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
@@ -138,7 +138,7 @@ creer_abondance <-
 
 #3. Création et injection des données dans les tables avec fonction creer_table
 #3.1. taxonomie
-creer_table(con, creer_taxo, "taxonomie", taxonomie)
+creer_table(con, creer_taxo, "taxonomie", taxonomie_inject)
 
 #3.2. sources
 creer_table(con, creer_sources, "sources", sources_inject)
