@@ -77,7 +77,6 @@ donnees_comb$geom <- NULL
 colnames(donnees_comb)[colnames(donnees_comb) == "values"] <- "valeurs"
 
 #Séparation de la table "donnees_comb" en 3 dataframes distincts pour analyse
-
 #1ere table -> dataframe taxonomie_inject
 taxonomie_inject <- taxonomie 
 
@@ -86,7 +85,8 @@ sources_inject <- division_table(donnees_comb, c('original_source', 'title', 'pu
 
 
 #3e table -> abondance à partir de donnees_comb
-abondance_inject <- division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'values', 'title', 'longitude', 'latitude'))
+abondance_inject <- division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
+
 
 
 #Création des dataframes avec RSQLite
@@ -114,9 +114,8 @@ creer_taxo <-
 #2.2. sources
 creer_sources <- 
   "CREATE TABLE sources(
-    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    title                   VARCHAR(500) PRIMARY KEY, 
     original_source         VARCHAR(50),
-    title                   VARCHAR(500),
     publisher               VARCHAR(10),
     license                 VARCHAR(50),
     owner                   VARCHAR(10)
@@ -134,7 +133,7 @@ creer_abondance <-
     longitude                   INTEGER,
     latitude                    INTEGER,
     FOREIGN KEY(observed_scientific_name)  REFERENCES taxonomie(observed_scientific_name),
-    FOREIGN KEY(source_id)  REFERENCES sources(id)
+    FOREIGN KEY(title)  REFERENCES sources(title)
   );"
 
 #3. Création et injection des données dans les tables avec fonction creer_table
@@ -150,3 +149,4 @@ creer_table(con, creer_abondance, "abondance", abondance_inject)
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
 
 
+dbDisconnect(con)
