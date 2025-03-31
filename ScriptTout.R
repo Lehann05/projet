@@ -81,8 +81,8 @@ colnames(donnees_comb)[colnames(donnees_comb) == "values"] <- "valeurs"
 taxonomie_inject <- taxonomie 
 
 #2e table -> sources à partir de donnees_comb
-sources_inject <- division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
-
+sources_int <- division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner')) #séparer les colonnes voulues du dataframe
+sources_inject <- sources_int %>% distinct() #enlever les lignes dupliquées (owner, license, publisher et original_source toujours similaire pour un même)
 
 #3e table -> abondance à partir de donnees_comb
 abondance_inject <- division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
