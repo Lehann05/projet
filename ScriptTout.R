@@ -23,7 +23,7 @@ source('division_table.R')
 source('creer_table.R')
 
 # Modifier le nom de la colonne order dans taxonomie, parce qu'il est problématique 
-
+# Prendre le bon directory 
 taxonomie <- read.csv('series_temporelles/taxonomie.csv')
 
 colnames(taxonomie)[colnames(taxonomie) == "order"] <- "taxo_order"
