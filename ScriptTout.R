@@ -4,6 +4,7 @@
 library(tidyr)
 library(dplyr)
 library(RSQLite)
+library(rlang)
 
 # Installer et charger pbapply pour avoir une barre de progression
 # install.packages("pbapply")
@@ -53,6 +54,7 @@ View(donnees_comb)
 # Unnest les colonnes years et values
 donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
 donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
+
 
 # Vérifier que tout est positifs (sauf les données géographique)
 donnees_comb <- justePositif(donnees_comb)
