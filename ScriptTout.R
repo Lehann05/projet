@@ -48,13 +48,13 @@ donnees_comb <- corriger_license(donnees_comb)
 # Étape 4 - Enlever les colonnes vides
 donnees_comb <- enlever_colonnes_vides(donnees_comb)
 
-# Étape 4 - Valider
+# Étape 5 -Unnest les colonnes years et values
+
+donnees_comb <- unnest_col(donnees_comb, 'years', 'values') 
+
+# Étape 6 - Valider
+
 View(donnees_comb)
-
-# Unnest les colonnes years et values
-donnees_comb <- unnest_column(donnees_comb, colname = "years", sep = ",")
-donnees_comb <- unnest_column(donnees_comb, colname = "values", sep = ",")
-
 
 # Vérifier que tout est positifs (sauf les données géographique)
 donnees_comb <- justePositif(donnees_comb)
@@ -64,7 +64,6 @@ donnees_comb <- NoNull(donnees_comb)
 
 # Gérer les données géom (séparation des latitudes et des longitudes)
 # Utiliser la fonction separer_coords. Ajout d'une barre de progression
-# Ça prend à peu près 5 minutes
 coords_list <- pblapply(donnees_comb$geom, separer_coords)
 
 # Créer la colonne longitude et latitude
