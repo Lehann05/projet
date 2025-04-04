@@ -1,72 +1,54 @@
 # Fonction pour dérouler nos colonnes years et values et les avoir sous forme de caractères 
-unnest_column <- function(df, colname, sep = ",") {
-  # Vérifie si la colonne existe dans le dataframe
-  if (!colname %in% names(df)) {
-    stop("La colonne n'existe pas")
-  }
-  
-  # Enlever les crochets et les espaces supplémentaires dans la colonne
-  df[[colname]] <- gsub("\\[|\\]", "", as.character(df[[colname]]))  # Enlève les crochets
-  df[[colname]] <- gsub("\\s+", "", df[[colname]])  # Enlève les espaces inutiles
-  
-  # Convertir la colonne en liste en fonction du séparateur spécifié
-  df[[colname]] <- strsplit(as.character(df[[colname]]), sep)
-  
-  # Appliquer unnest() pour transformer chaque élément de la liste en ligne séparée
-  df_unnested <- df %>%
-    tidyr::unnest(!!sym(colname))  # Le sym() permet de référencer la colonne dynamiquement
-  
-  # Convertir les années en nombres
-  df_unnested[[colname]] <- as.numeric(df_unnested[[colname]])  # Conversion en numérique
-  
-  # Vérification 
-  if (is.numeric(df_unnested[[colname]])) {
-    cat("Les valeurs sont numériques.\n")
-  }
-  
-  return(df_unnested)
-}
-
-
-#Autre test 
 unnest_columns_together <- function(df, colname1, colname2, sep = ",") {
-  # Nettoyer les colonnes en supprimant crochets et espaces
-  df[[colname1]] <- gsub("\\[|\\]", "", as.character(df[[colname1]]))
-  df[[colname1]] <- gsub("\\s+", "", df[[colname1]])
+  # Étape 1 : Nettoyer les chaînes de caractères dans les deux colonnes
   
-  df[[colname2]] <- gsub("\\[|\\]", "", as.character(df[[colname2]]))
-  df[[colname2]] <- gsub("\\s+", "", df[[colname2]])
+  # Enlève les crochets [ ] des chaînes de caractères (ex: "[1985,1990]" → "1985,1990")
+  df[[colname1]] <- gsub("\\[|\\]", "", df[[colname1]])
+  df[[colname2]] <- gsub("\\[|\\]", "", df[[colname2]])
   
-  # Convertir les colonnes en liste de valeurs
-  df[[colname1]] <- strsplit(as.character(df[[colname1]]), sep)
-  df[[colname2]] <- strsplit(as.character(df[[colname2]]), sep)
+  # Étape 2 : Séparer les chaînes en listes d'éléments
   
-  # Vérifier si les deux colonnes ont le même nombre d'éléments après split
-  df_unnested <- df %>%
-    rowwise() %>%
-    mutate(
-      # Créer une nouvelle ligne pour chaque année et valeur
-      year = list(df[[colname1]]), 
-      value = list(df[[colname2]]),
-      n = length(year[[1]])  # Compter le nombre d'éléments dans chaque ligne
-    ) %>%
-    unnest(cols = c(year, value)) %>%
-    select(-n)  # Retirer la colonne temporaire 'n'
+  # Transforme les chaînes séparées par des virgules en listes (ex: "1985,1990" → list("1985", "1990"))
+  list1 <- strsplit(df[[colname1]], sep)
+  list2 <- strsplit(df[[colname2]], sep)
   
-  return(df_unnested)
+  # Enlève les espaces autour de chaque élément (ex: " 1985 " → "1985")
+  list1 <- lapply(list1, trimws)
+  list2 <- lapply(list2, trimws)
+  
+  # Étape 3 : Créer un nouveau tableau déroulé
+  
+  result <- purrr::map2_dfr(seq_along(list1), list1, function(i, y_list) {
+    # Récupère la liste de valeurs associée à la même ligne
+    vals <- list2[[i]]
+    
+    # Vérifie si le nombre d'années = nombre de valeurs, sinon avertit et saute cette ligne
+    if (length(y_list) != length(vals)) {
+      warning(paste("Mismatch at row", i))  # Affiche un warning indiquant la ligne fautive
+      return(NULL)  # Ignore cette ligne
+    }
+    
+    # Récupère les autres colonnes (qui ne sont pas years/values) pour cette ligne
+    others <- df[i, !(names(df) %in% c(colname1, colname2)), drop = FALSE]
+    
+    # Assemble les colonnes fixes avec les paires année/valeur
+    cbind(
+      others,
+      years = y_list,
+      values = vals
+    )
+  })
+  
+  # Étape 4 : Conversion des colonnes year et value en numérique
+  
+  # Convertit la colonne "year" en numérique (ex: "1985" → 1985)
+  result$year <- as.numeric(result$years)
+  
+  # Convertit la colonne "value" en numérique (ex: "52134.82" → 52134.82)
+  result$value <- as.numeric(result$values)
+  
+  # Retourne le résultat final
+  return(result)
 }
-
-
-# Applique la fonction sur ton dataframe sans modifier l'objet original
-donnees_comb_unnested <- unnest_columns_together(donnees_comb, "years", "values")
-
-
-View(donnees_comb_unnested)
-
-
-
-
-
-
 
 
