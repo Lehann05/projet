@@ -1,5 +1,5 @@
 # Fonction pour dérouler nos colonnes years et values et les avoir sous forme de caractères 
-unnest_columns_together <- function(df, colname1, colname2, sep = ",") {
+unnest_columns <- function(df, colname1, colname2, sep = ",") {
   # Étape 1 : Nettoyer les chaînes de caractères dans les deux colonnes
   
   # Enlève les crochets [ ] des chaînes de caractères (ex: "[1985,1990]" → "1985,1990")
