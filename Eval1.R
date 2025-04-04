@@ -1,5 +1,5 @@
 # Fonction pour dérouler nos colonnes years et values et les avoir sous forme de caractères 
-unnest_columns <- function(df, colname1, colname2, sep = ",") {
+unnest_col <- function(df, colname1, colname2, sep = ",") {
   # Étape 1 : Nettoyer les chaînes de caractères dans les deux colonnes
   
   # Enlève les crochets [ ] des chaînes de caractères (ex: "[1985,1990]" → "1985,1990")
@@ -42,10 +42,10 @@ unnest_columns <- function(df, colname1, colname2, sep = ",") {
   # Étape 4 : Conversion des colonnes year et value en numérique
   
   # Convertit la colonne "year" en numérique (ex: "1985" → 1985)
-  result$year <- as.numeric(result$years)
+  result$years <- as.numeric(result$years)
   
   # Convertit la colonne "value" en numérique (ex: "52134.82" → 52134.82)
-  result$value <- as.numeric(result$values)
+  result$values <- as.numeric(result$values)
   
   # Retourne le résultat final
   return(result)
