@@ -147,5 +147,27 @@ creer_table(con, creer_sources, "sources", sources_inject)
 #3.3. abondance
 creer_table(con, creer_abondance, "abondance", abondance_inject)
 
+#Aller chercher les données utiles concernant les coyotes
+
+canis_lupus_data <- dbGetQuery(con, "
+  SELECT years, valeurs, observed_scientific_name, latitude, longitude, unit
+  FROM abondance
+  WHERE observed_scientific_name = 'Canis lupus'
+  ORDER BY years ASC;
+")
+
+View(canis_lupus_data)
+
+#Aller chercher les données utiles concernant les cerfs de Virginie 
+odocoileus_virginianus_data <- dbGetQuery(con, "
+  SELECT years, valeurs, observed_scientific_name, latitude, longitude, unit
+  FROM abondance
+  WHERE observed_scientific_name = 'Odocoileus virginianus'
+   AND unit IN ('Number of individuals', 'Individuals')
+  ORDER BY years ASC;
+")
+
+View(odocoileus_virginianus_data)
+
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
-dbDisconnect(con)
+#dbDisconnect(con)
