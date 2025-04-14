@@ -117,9 +117,9 @@ creer_sources <-
   "CREATE TABLE sources(
     title                   VARCHAR(500) PRIMARY KEY, 
     original_source         VARCHAR(50),
-    publisher               VARCHAR(10),
+    publisher               VARCHAR(100),
     license                 VARCHAR(50),
-    owner                   VARCHAR(10)
+    owner                   VARCHAR(100)
   );"
 
 #2.3. abondance
@@ -131,8 +131,8 @@ creer_abondance <-
     unit                        VARCHAR(75),
     valeurs                      INTEGER,
     title                       VARCHAR(500),
-    longitude                   INTEGER,
-    latitude                    INTEGER,
+    longitude                   DOUBLE,
+    latitude                    DOUBLE,
     FOREIGN KEY(observed_scientific_name)  REFERENCES taxonomie(observed_scientific_name),
     FOREIGN KEY(title)  REFERENCES sources(title)
   );"
