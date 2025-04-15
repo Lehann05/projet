@@ -163,7 +163,8 @@ odocoileus_virginianus_data <- dbGetQuery(con, "
   SELECT years, valeurs, observed_scientific_name, latitude, longitude, unit
   FROM abondance
   WHERE observed_scientific_name = 'Odocoileus virginianus'
-   AND unit IN ('Number of individuals', 'Individuals')
+   AND unit IN ('Number of individuals')
+   AND years BETWEEN 1983 AND 2001
   ORDER BY years ASC;
 ")
 
@@ -179,5 +180,32 @@ Cl_moyenne <- dbGetQuery(con, "
 ")
 
 View(Cl_moyenne)
+
+
+library(ggplot2)
+
+ggplot(Cl_moyenne, aes(x = years, y = moyenne_valeurs)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(color = "darkblue", size = 2) +
+  labs(
+    title = "Moyenne annuelle des observations de Canis lupus",
+    x = "Année",
+    y = "Valeur moyenne"
+  ) +
+  theme_minimal()
+
+ggplot(odocoileus_virginianus_data, aes(x = years, y = valeurs)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(color = "darkblue", size = 2) +
+  labs(
+    title = "Observations annuelles de cerfs de virginie",
+    x = "Année",
+    y = "Valeur"
+  ) +
+  theme_minimal()
+
+
+
+
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
 #dbDisconnect(con)
