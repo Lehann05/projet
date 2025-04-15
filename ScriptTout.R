@@ -169,5 +169,15 @@ odocoileus_virginianus_data <- dbGetQuery(con, "
 
 View(odocoileus_virginianus_data)
 
+#Calculer la moyenne des valeurs par année pour Canis lupus 
+Cl_moyenne <- dbGetQuery(con, "
+  SELECT observed_scientific_name, years, AVG(CAST(valeurs AS REAL)) AS moyenne_valeurs, longitude, latitude, unit
+  FROM abondance
+  WHERE observed_scientific_name = 'Canis lupus'
+  GROUP BY years
+  ORDER BY years ASC;
+")
+
+View(Cl_moyenne)
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
 #dbDisconnect(con)
