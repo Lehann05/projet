@@ -205,7 +205,75 @@ ggplot(odocoileus_virginianus_data, aes(x = years, y = valeurs)) +
   theme_minimal()
 
 
+#Premier essai pour le troisième graphique 
+
+# On définit un facteur d’échelle pour ramener les valeurs des cerfs sur l’échelle des loups
+facteur <- max(odocoileus_virginianus_data$valeurs) / max(Cl_moyenne$moyenne_valeurs)
+
+# Fusion des deux pour faire un seul graphique (si utile pour la légende)
+ggplot() +
+  # Série des cerfs
+  geom_line(data = odocoileus_virginianus_data,
+            aes(x = years, y = valeurs / facteur, color = "Odocoileus virginianus"),
+            size = 1) +
+  geom_point(data = odocoileus_virginianus_data,
+             aes(x = years, y = valeurs / facteur, color = "Odocoileus virginianus"),
+             size = 2) +
+  
+  # Série des loups
+  geom_line(data = Cl_moyenne,
+            aes(x = years, y = moyenne_valeurs, color = "Canis lupus"),
+            size = 1) +
+  geom_point(data = Cl_moyenne,
+             aes(x = years, y = moyenne_valeurs, color = "Canis lupus"),
+             size = 2) +
+  
+  scale_y_continuous(
+    name = "Nombre de loups",
+    sec.axis = sec_axis(~ . * facteur, name = "Nombre de cerfs de Virginie")
+  ) +
+  scale_color_manual(values = c("Canis lupus" = "darkblue", "Odocoileus virginianus" = "steelblue")) +
+  labs(
+    title = "Évolution des populations : Loups et Cerf de Virginie",
+    x = "Année",
+    color = "Espèce"
+  ) +
+  theme_minimal()
+
+#2e essai pour le dernier graphique 
+library(dplyr)
+library(ggplot2)
+
+# Normalisation
+Cl_moyenne_norm <- Cl_moyenne %>%
+  mutate(valeurs_norm = (moyenne_valeurs - min(moyenne_valeurs)) /
+           (max(moyenne_valeurs) - min(moyenne_valeurs)))
+
+cerf_norm <- odocoileus_virginianus_data %>%
+  mutate(valeurs_norm = (valeurs - min(valeurs)) /
+           (max(valeurs) - min(valeurs)))
+
+# Fusion (optionnel mais pratique pour ggplot avec une légende)
+Cl_moyenne_norm$espece <- "Canis lupus"
+cerf_norm$espece <- "Odocoileus virginianus"
+
+donnees_norm <- bind_rows(
+  Cl_moyenne_norm %>% select(years, valeurs_norm, espece),
+  cerf_norm %>% select(years, valeurs_norm, espece)
+)
+
+# Graphique
+ggplot(donnees_norm, aes(x = years, y = valeurs_norm, color = espece)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "Évolution normalisée des populations",
+    x = "Année",
+    y = "Valeurs normalisées",
+    color = "Espèce"
+  ) +
+  theme_minimal()
 
 
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
-#dbDisconnect(con)
+dbDisconnect(con)
