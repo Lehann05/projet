@@ -182,7 +182,6 @@ Cl_moyenne <- dbGetQuery(con, "
 View(Cl_moyenne)
 
 
-library(ggplot2)
 
 ggplot(Cl_moyenne, aes(x = years, y = moyenne_valeurs)) +
   geom_line(color = "steelblue", size = 1) +
