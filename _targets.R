@@ -19,6 +19,7 @@ source('enl_col_vide.R')
 source('division_table.R')
 source('creer_table.R')
 source('open_corr.R')
+source('creer_figure')
 
 #Pipeline
 list(
