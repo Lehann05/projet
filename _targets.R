@@ -5,6 +5,7 @@ library(tidyr)
 library(dplyr)
 library(RSQLite)
 library(pbapply)
+library(tarchetypes)
 
 #Script R
 source('Eval1.R')
@@ -275,5 +276,11 @@ list(
   tar_target(
     graph_ClOv,
     tracer_populations(Cl_norm, Ov_norm)
+  ),
+  
+  #Section 5: Création du rapport finale avec Rmarkdown
+  tar_render(
+    rapport,
+    path = "rapport.Rmd"
   )
 )
