@@ -35,7 +35,7 @@ unnest_col <- function(df, colname1, colname2, sep = ",") {
     cbind(
       others,
       years = y_list,
-      values = vals
+      valeurs = vals
     )
   })
   
@@ -45,7 +45,7 @@ unnest_col <- function(df, colname1, colname2, sep = ",") {
   result$years <- as.numeric(result$years)
   
   # Convertit la colonne "value" en numérique (ex: "52134.82" → 52134.82)
-  result$values <- as.numeric(result$values)
+  result$valeurs <- as.numeric(result$valeurs)
   
   # Retourne le résultat final
   return(result)
