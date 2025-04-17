@@ -18,7 +18,7 @@ source('Cor_license.R')
 source('enl_col_vide.R')
 source('division_table.R')
 source('creer_table.R')
-source('open_corr')
+source('open_corr.R')
 
 #Pipeline
 list(
