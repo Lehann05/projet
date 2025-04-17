@@ -45,7 +45,7 @@ list(
   #Ouverture combiner les données dossier series_temporelles + ouverture dossier_comb + changement values -> valeurs
   tar_target(
     dossier_comb,
-    combine_csv(path_series, "taxonomie.csv", "dossier_comb.csv", "values", "valeurs")
+    combiner_csv(path_series, "taxonomie.csv", "dossier_comb.csv", "values", "valeurs")
   ),
   
   #Uniformiser nom colonne pour donnees geo
