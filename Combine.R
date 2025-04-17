@@ -1,6 +1,6 @@
 #Fonction pour combiner les fichiers csv ensemble 
 
-combiner_csv <- function(dossier_principal, exclusion, nom_sortie) {
+combiner_csv <- function(dossier_principal, exclusion, nom_sortie, colonne, correction) {
 
   # Lister les fichiers CSV dans le dossier
   liste_fichiers <- list.files(path = dossier_principal, 
@@ -24,4 +24,8 @@ combiner_csv <- function(dossier_principal, exclusion, nom_sortie) {
   write.csv(donnees_combinees, file = nom_sortie, row.names = FALSE)
   
   cat(paste0("Succès : ", length(liste_fichiers), " fichiers combinés dans '", nom_sortie, "'\n"))
+  
+  #Ouverture dossier et correction nom de colonne
+  data <- ouverture(nom_sortie, colonne, correction)
+  return(data)
 }
