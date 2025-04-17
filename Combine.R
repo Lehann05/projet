@@ -17,8 +17,8 @@ combiner_csv <- function(dossier_principal, exclusion, nom_sortie, colonne, corr
   }
   
   # Lire et combiner
-  donnees_combinees <- lapply(liste_fichiers, read.csv) %>%
-    bind_rows()
+  donnees_combi <- lapply(liste_fichiers, read.csv) %>% mutate(years = as.character(years))
+  donnees_combinees <- bind_rows(donnees_combi)
   
   # Exporter le résultat
   write.csv(donnees_combinees, file = nom_sortie, row.names = FALSE)
