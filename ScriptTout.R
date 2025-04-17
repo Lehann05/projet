@@ -22,6 +22,7 @@ source('Cor_license.R')
 source('enl_col_vide.R')
 source('division_table.R')
 source('creer_table.R')
+source('open_corr.R')
 
 # Modifier le nom de la colonne order dans taxonomie, parce qu'il est problématique 
 # Prendre le bon directory 
@@ -32,9 +33,7 @@ colnames(taxonomie)[colnames(taxonomie) == "order"] <- "taxo_order"
 
 # Utiliser la fonction qui combine les csv (sauf taxonomie)
 # Étape 1 - Combiner
-combiner_csv(dossier_principal = "./series_temporelles", 
-             exclusion = "taxonomie.csv", 
-             nom_sortie = "dossier_comb.csv")
+dossier_comb <- combiner_csv(dossier_principal = "./series_temporelles", exclusion = "taxonomie.csv", nom_sortie = "dossier_comb.csv")
 
 dossier_comb <- read.csv('dossier_comb.csv')
 
