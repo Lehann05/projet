@@ -204,7 +204,7 @@ list(
   #(on fait une moyenne des données d'abondance pour chaque année, car il peut y en avoir plusieurs pour une année)
   tar_target(
     canis_lupus_data,
-    dbGetQuery(con, "
+    dbGetQuery(connection, "
       SELECT observed_scientific_name, years, AVG(CAST(valeurs AS REAL)) AS moyenne_valeurs, longitude, latitude, unit
       FROM abondance
       WHERE observed_scientific_name = 'Canis lupus'
@@ -215,7 +215,7 @@ list(
   #3.2 Requête pour la sélection des données utiles concernant les cerfs de Virginie (Odocoileus virginianus)
   tar_target(
     odocoileus_virginianus_data,
-    dbGetQuery(con, "
+    dbGetQuery(connection, "
       SELECT years, valeurs, observed_scientific_name, latitude, longitude, unit
       FROM abondance
       WHERE observed_scientific_name = 'Odocoileus virginianus'
