@@ -22,6 +22,11 @@ Pour le dernier graphique, un graphique combiné a été réalisé. La requête 
 Les données géographiques ont été visualisées pour permettre de s'assurer que les cerfs de virginie et les loups se retrouvaient dans la même zone d'étude et c’était le cas.
 
 ## Résultats 
+
+
+![Légende figure. \label{fig:plot1}]("file:///C:/Users/stpie/OneDrive/Documents/projet/Rplots.pdf"){width=50% height=40%}
+
+
 La figure 1 illustre la moyenne du nombre de loups pour un domaine de 100 km dans la région du Nouveau-Brunswick. Il est possible de remarquer que cette moyenne est en constante variation au fil des années. L’année la plus critique pour les loups était en 1994 où il est possible de voir une moyenne plus basse que 0.8 loups aux 100 km. L’année la plus prospère pour *Canis lupus* est en 1984 où l’on peut remarquer une moyenne de plus de 1.3 loups aux 100 km. 
 
 
