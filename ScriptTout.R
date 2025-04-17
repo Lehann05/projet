@@ -62,15 +62,8 @@ donnees_comb <- justePositif(donnees_comb)
 donnees_comb <- NoNull(donnees_comb)
 
 # Gérer les données géom (séparation des latitudes et des longitudes)
-# Utiliser la fonction separer_coords. Ajout d'une barre de progression
-coords_list <- pblapply(donnees_comb$geom, separer_coords)
-
-# Créer la colonne longitude et latitude
-donnees_comb$longitude <- sapply(coords_list, `[`, 1)
-donnees_comb$latitude  <- sapply(coords_list, `[`, 2)
-
-# Enlever la colonne geom 
-donnees_comb$geom <- NULL
+# Utiliser la fonction traiter_coords_geom. Ajout d'une barre de progression
+donnees_comb <- traiter_coords_geom(donnees_comb)
 
 # Modification du nom de la colonne values parce qu'elle cause problème aussi 
 
