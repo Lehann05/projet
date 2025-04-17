@@ -115,7 +115,7 @@ list(
   #Section 2: création de tables SQL et injection des dataframes taxonomie_inject, sources_inject et abondance_inject dans celles-ci
   #2.1 Connection à utiliser
   tar_target(
-    con, 
+    connection, 
     dbConnect(SQLite(), dbname="réseau.db")
   ),
   
@@ -172,18 +172,18 @@ list(
   #Table taxonomie
   tar_target(
     taxonomie,
-    creer_table(con, creer_taxo, "taxonomie", taxonomie_inject)
+    creer_table(connection, creer_taxo, "taxonomie", taxonomie_inject)
   ),
   
   #Table sources
   tar_target(
     sources,
-    creer_table(con, creer_sources, "sources", sources_inject)
+    creer_table(connection, creer_sources, "sources", sources_inject)
   ),
   
   #Table abondance
   tar_target(
     abondance,
-    creer_table(con, creer_abondance, "abondance", abondance_inject)
+    creer_table(connection, creer_abondance, "abondance", abondance_inject)
   )
 )
