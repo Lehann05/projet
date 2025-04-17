@@ -187,4 +187,3 @@ list(
     creer_table(con, creer_abondance, "abondance", abondance_inject)
   )
 )
-)
