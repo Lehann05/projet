@@ -22,6 +22,7 @@ Travail de session
 │ 
 ├── rapport/
 │   ├── rapport.Rmd
+│   ├── BIO500 rapport.bib
 │   └── rapport.html
 │ 
 ├── .gitignore
