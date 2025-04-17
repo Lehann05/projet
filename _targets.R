@@ -85,5 +85,106 @@ list(
   tar_target(
     comb_NA,
     NoNull(comb_positif)
+  ),
+  
+  #Le problème des coordo
+  tar_target(
+    comb_finales,
+    command = 
+  ),
+  
+  #1.4 Séparation du dataframe comb_finales en 2 tables -> sources et abondance
+  #Sources: séparer les colonnes voulues du dataframe et les stocker dans un objet intermédiaire
+  tar_target(
+    sources_inter,
+    division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
+  ),
+  
+  #Sources: enlever les lignes dupliquées (owner, license, publisher et original_source toujours similaire pour un même titre)
+  tar_target(
+    sources_inject,
+    sources_inter %>% distinct()
+  ),
+  
+  #Abondance: séparer les colonnes voulues du dataframe
+  tar_target(
+    abondance_inject,
+    division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
+  ),
+  
+  #Section 2: création de tables SQL et injection des dataframes taxonomie_inject, sources_inject et abondance_inject dans celles-ci
+  #2.1 Connection à utiliser
+  tar_target(
+    con, 
+    dbConnect(SQLite(), dbname="réseau.db")
+  ),
+  
+  #2.2 Requête de création des tables SQL
+  #Requête pour table taxonomie
+  tar_target(
+    creer_taxo,
+    "CREATE TABLE taxonomie(
+    observed_scientific_name    VARCHAR(75),
+    valid_scientific_name       VARCHAR(75),
+    rank                        VARCHAR(20),
+    vernacular_fr               VARCHAR(55),
+    kingdom                     VARCHAR(15),
+    phylum                      VARCHAR(15),
+    class                       VARCHAR(30),
+    taxo_order                  VARCHAR(35),
+    family                      VARCHAR(35),
+    genus                       VARCHAR(35),
+    species                     VARCHAR(55),
+    PRIMARY KEY(observed_scientific_name)
+  );"
+  ),
+  
+  #Requête pour table sources
+  tar_target(
+    creer_source,
+    "CREATE TABLE sources(
+    title                   VARCHAR(500) PRIMARY KEY, 
+    original_source         VARCHAR(50),
+    publisher               VARCHAR(100),
+    license                 VARCHAR(50),
+    owner                   VARCHAR(100)
+  );"
+  ),
+  
+  #Requête pour table abondance
+  tar_target(
+    creer_abondance,
+    "CREATE TABLE abondance(
+    id                          INTEGER PRIMARY KEY AUTOINCREMENT,
+    observed_scientific_name    VARCHAR(75),
+    years                       INTEGER,
+    unit                        VARCHAR(75),
+    valeurs                      INTEGER,
+    title                       VARCHAR(500),
+    longitude                   DOUBLE,
+    latitude                    DOUBLE,
+    FOREIGN KEY(observed_scientific_name)  REFERENCES taxonomie(observed_scientific_name),
+    FOREIGN KEY(title)  REFERENCES sources(title)
+  );"
+  ), 
+  
+  #2.3 Création des tables et injection des données
+  #Table taxonomie
+  tar_target(
+    taxonomie,
+    creer_table(con, creer_taxo, "taxonomie", taxonomie_inject)
+  ),
+  
+  #Table sources
+  tar_target(
+    sources,
+    creer_table(con, creer_sources, "sources", sources_inject)
+  ),
+  
+  #Table abondance
+  tar_target(
+    abondance,
+    creer_table(con, creer_abondance, "abondance", abondance_inject)
   )
+)
 )
