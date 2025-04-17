@@ -169,7 +169,7 @@ list(
     observed_scientific_name    VARCHAR(75),
     years                       INTEGER,
     unit                        VARCHAR(75),
-    valeurs                      INTEGER,
+    valeurs                     INTEGER,
     title                       VARCHAR(500),
     longitude                   DOUBLE,
     latitude                    DOUBLE,
@@ -195,5 +195,5 @@ list(
   tar_target(
     abondance,
     creer_table(connection, creer_abondance, "abondance", abondance_inject)
-  )
+  ),
 )
