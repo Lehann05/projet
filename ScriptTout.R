@@ -181,67 +181,33 @@ Cl_moyenne <- dbGetQuery(con, "
 
 View(Cl_moyenne)
 
+#Graphique loup 
+plot(
+  Cl_moyenne$years,
+  Cl_moyenne$moyenne_valeurs,
+  type = "o",                        # "o" = lignes + points
+  col = "steelblue",                # Couleur de la ligne et des points
+  pch = 16,                         # Style de point plein
+  lwd = 2,                          # Épaisseur de la ligne
+  xlab = "Année",
+  ylab = "Valeur moyenne",
+  main = "Moyenne annuelle des observations de Canis lupus"
+)
 
+#Graphique cerfs
+plot(
+  odocoileus_virginianus_data$years,
+  odocoileus_virginianus_data$valeurs,
+  type = "o",                         # "o" = points + ligne
+  col = "orange",                 # Couleur de la ligne (et des points par défaut)
+  pch = 16,                          # Type de point (16 = rond plein)
+  lwd = 2,                           # Épaisseur de la ligne
+  xlab = "Année",
+  ylab = "Valeur",
+  main = "Observations annuelles de Odocoileus virginianus"
+)
 
-ggplot(Cl_moyenne, aes(x = years, y = moyenne_valeurs)) +
-  geom_line(color = "steelblue", size = 1) +
-  geom_point(color = "darkblue", size = 2) +
-  labs(
-    title = "Moyenne annuelle des observations de Canis lupus",
-    x = "Année",
-    y = "Valeur moyenne"
-  ) +
-  theme_minimal()
-
-ggplot(odocoileus_virginianus_data, aes(x = years, y = valeurs)) +
-  geom_line(color = "steelblue", size = 1) +
-  geom_point(color = "darkblue", size = 2) +
-  labs(
-    title = "Observations annuelles de cerfs de virginie",
-    x = "Année",
-    y = "Valeur"
-  ) +
-  theme_minimal()
-
-
-#Premier essai pour le troisième graphique 
-
-# On définit un facteur d’échelle pour ramener les valeurs des cerfs sur l’échelle des loups
-facteur <- max(odocoileus_virginianus_data$valeurs) / max(Cl_moyenne$moyenne_valeurs)
-
-# Fusion des deux pour faire un seul graphique (si utile pour la légende)
-ggplot() +
-  # Série des cerfs
-  geom_line(data = odocoileus_virginianus_data,
-            aes(x = years, y = valeurs / facteur, color = "Odocoileus virginianus"),
-            size = 1) +
-  geom_point(data = odocoileus_virginianus_data,
-             aes(x = years, y = valeurs / facteur, color = "Odocoileus virginianus"),
-             size = 2) +
-  
-  # Série des loups
-  geom_line(data = Cl_moyenne,
-            aes(x = years, y = moyenne_valeurs, color = "Canis lupus"),
-            size = 1) +
-  geom_point(data = Cl_moyenne,
-             aes(x = years, y = moyenne_valeurs, color = "Canis lupus"),
-             size = 2) +
-  
-  scale_y_continuous(
-    name = "Nombre de loups",
-    sec.axis = sec_axis(~ . * facteur, name = "Nombre de cerfs de Virginie")
-  ) +
-  scale_color_manual(values = c("Canis lupus" = "darkblue", "Odocoileus virginianus" = "steelblue")) +
-  labs(
-    title = "Évolution des populations : Loups et Cerf de Virginie",
-    x = "Année",
-    color = "Espèce"
-  ) +
-  theme_minimal()
-
-#2e essai pour le dernier graphique 
-library(dplyr)
-library(ggplot2)
+#Graphique loup et cerf 
 
 # Normalisation
 Cl_moyenne_norm <- Cl_moyenne %>%
@@ -252,26 +218,40 @@ cerf_norm <- odocoileus_virginianus_data %>%
   mutate(valeurs_norm = (valeurs - min(valeurs)) /
            (max(valeurs) - min(valeurs)))
 
-# Fusion (optionnel mais pratique pour ggplot avec une légende)
-Cl_moyenne_norm$espece <- "Canis lupus"
-cerf_norm$espece <- "Odocoileus virginianus"
-
-donnees_norm <- bind_rows(
-  Cl_moyenne_norm %>% select(years, valeurs_norm, espece),
-  cerf_norm %>% select(years, valeurs_norm, espece)
+# Tracer la première série (Canis lupus)
+plot(
+  Cl_moyenne_norm$years,
+  Cl_moyenne_norm$valeurs_norm,
+  type = "o",
+  col = "steelblue",
+  pch = 16,
+  lwd = 2,
+  ylim = c(0, 1),  # Comme c'est normalisé, ça reste entre 0 et 1
+  xlab = "Année",
+  ylab = "Valeurs normalisées",
+  main = "Évolution des populations de Canis lupus et Odocoileus virginianus"
 )
 
-# Graphique
-ggplot(donnees_norm, aes(x = years, y = valeurs_norm, color = espece)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  labs(
-    title = "Évolution normalisée des populations",
-    x = "Année",
-    y = "Valeurs normalisées",
-    color = "Espèce"
-  ) +
-  theme_minimal()
+# Ajouter la deuxième série (Odocoileus virginianus)
+lines(
+  cerf_norm$years,
+  cerf_norm$valeurs_norm,
+  type = "o",
+  col = "orange",
+  pch = 17,
+  lwd = 2
+)
+
+# Ajouter une légende
+legend(
+  "topleft",
+  legend = c("Canis lupus", "Odocoileus virginianus"),
+  col = c("steelblue", "orange"),
+  pch = c(16, 17),
+  lwd = 2,
+  bty = "n"
+)
+
 
 
 #Se déconnecter de la connection avec dbDisconnect() si pas d'analyse, SVP
