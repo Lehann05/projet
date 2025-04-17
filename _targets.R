@@ -87,10 +87,10 @@ list(
     NoNull(comb_positif)
   ),
   
-  #Le problème des coordo
+  #traitement des coordonnées géographiques -> ajout colonnes longitude et latitude, séparation des coordonnées, et suppression de la colonne geom
   tar_target(
     comb_finales,
-    command = 
+    traiter_coords_geom(comb_NA)
   ),
   
   #1.4 Séparation du dataframe comb_finales en 2 tables -> sources et abondance
