@@ -261,7 +261,7 @@ list(
   # Normalisation des données d'abondance pour les loups (Canis lupus = Cl)
   tar_target(
     Cl_norm,
-    Canis_lupus_data %>%
+    canis_lupus_data %>%
       mutate(valeurs_norm = (moyenne_valeurs - min(moyenne_valeurs)) / (max(moyenne_valeurs) - min(moyenne_valeurs)))
   ),
   
