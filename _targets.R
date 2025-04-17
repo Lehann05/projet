@@ -197,4 +197,83 @@ list(
     abondance,
     creer_table(connection, creer_abondance, "abondance", abondance_inject)
   ),
+  
+  #Section 3: Requête de pour la sélection des données qui nous serviront pour l'analyse
+  #3.1 Requête pour la sélection des données utiles concernant les loups (Canis lupus)
+  #(on fait une moyenne des données d'abondance pour chaque année, car il peut y en avoir plusieurs pour une année)
+  tar_target(
+    canis_lupus_data,
+    dbGetQuery(con, "
+      SELECT observed_scientific_name, years, AVG(CAST(valeurs AS REAL)) AS moyenne_valeurs, longitude, latitude, unit
+      FROM abondance
+      WHERE observed_scientific_name = 'Canis lupus'
+      GROUP BY years
+      ORDER BY years ASC;")
+  ),
+  
+  #3.2 Requête pour la sélection des données utiles concernant les cerfs de Virginie (Odocoileus virginianus)
+  tar_target(
+    odocoileus_virginianus_data,
+    dbGetQuery(con, "
+      SELECT years, valeurs, observed_scientific_name, latitude, longitude, unit
+      FROM abondance
+      WHERE observed_scientific_name = 'Odocoileus virginianus'
+        AND unit IN ('Number of individuals')
+        AND years BETWEEN 1983 AND 2001
+      ORDER BY years ASC;")
+  ),
+  
+  #Section 4: Création des figures à partir des données sélectionnées
+  #4.1 Figure 1 -> variation de la moyenne du nombre de loups à travers le temps dans la zone d'étude
+  tar_target(
+    graph_loup,
+    plot(
+      canis_lupus_data$years,
+      canis_lupus_data$moyenne_valeurs,
+      type = "o",                        # "o" = lignes + points
+      col = "steelblue",                # Couleur de la ligne et des points
+      pch = 16,                         # Style de point plein
+      lwd = 2,                          # Épaisseur de la ligne
+      xlab = "Année",
+      ylab = "Valeur moyenne",
+      main = "Moyenne annuelle des observations de Canis lupus"
+    )
+  ),
+  
+  #4.2 Figure 2 -> variation de l'abondance des cerfs de Virginie à travers le temps dans la zone d'étude
+  tar_target(
+    graph_cerf,
+    plot(
+      odocoileus_virginianus_data$years,
+      odocoileus_virginianus_data$valeurs,
+      type = "o",                         # "o" = points + ligne
+      col = "orange",                 # Couleur de la ligne (et des points par défaut)
+      pch = 16,                          # Type de point (16 = rond plein)
+      lwd = 2,                           # Épaisseur de la ligne
+      xlab = "Année",
+      ylab = "Valeur",
+      main = "Observations annuelles de Odocoileus virginianus"
+    )
+  ),
+  
+  #4.3 Figure 3 -> variation des valeurs d'abondance normalisées des cerfs et des loups à travers le temps dans la zone d'étude
+  # Normalisation des données d'abondance pour les loups (Canis lupus = Cl)
+  tar_target(
+    Cl_norm,
+    Canis_lupus_data %>%
+      mutate(valeurs_norm = (moyenne_valeurs - min(moyenne_valeurs)) / (max(moyenne_valeurs) - min(moyenne_valeurs)))
+  ),
+  
+  # Normalisation des données d'abondance pour les cerfs (Odocoileus virginianus = Ov)
+  tar_target(
+    Ov_norm,
+    odocoileus_virginianus_data %>%
+      mutate(valeurs_norm = (valeurs - min(valeurs)) / (max(valeurs) - min(valeurs)))
+  ),
+  
+  #Réalisation de la figure
+  tar_target(
+    graph_ClOv,
+    tracer_populations(Cl_norm, Ov_norm)
+  )
 )
