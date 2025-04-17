@@ -96,8 +96,13 @@ list(
   #1.4 Séparation du dataframe comb_finales en 2 tables -> sources et abondance
   #Sources: séparer les colonnes voulues du dataframe et les stocker dans un objet intermédiaire
   tar_target(
+    col_sources,
+    c('original_source', 'title', 'publisher', 'license', 'owner')
+  ),
+  
+  tar_target(
     sources_inter,
-    division_table(comb_finales, c('original_source', 'title', 'publisher', 'license', 'owner'))
+    division_table(comb_finales, col_sources)
   ),
   
   #Sources: enlever les lignes dupliquées (owner, license, publisher et original_source toujours similaire pour un même titre)
@@ -106,10 +111,15 @@ list(
     sources_inter %>% distinct()
   ),
   
+  tar_target(
+    col_abondance,
+    c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude')
+  ),
+  
   #Abondance: séparer les colonnes voulues du dataframe
   tar_target(
     abondance_inject,
-    division_table(comb_finales, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
+    division_table(comb_finales, col_abondance)
   ),
   
   #Section 2: création de tables SQL et injection des dataframes taxonomie_inject, sources_inject et abondance_inject dans celles-ci
