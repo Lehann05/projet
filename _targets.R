@@ -22,6 +22,8 @@ source('open_corr.R')
 
 #Pipeline
 list(
+  #Section 1: ouverture, uniformisation, correction et séparation des données en table
+  #1.1 ouverture des données
   #Chemin du fichier taxonomie
   tar_target(
     name = path_taxo,
@@ -48,6 +50,7 @@ list(
     combiner_csv(path_series, "taxonomie.csv", "dossier_comb.csv", "values", "valeurs")
   ),
   
+  #1.2 Uniformisation des donnees
   #Uniformiser nom colonne pour donnees geo
   tar_target(
     donnees_comb,
@@ -66,12 +69,12 @@ list(
     enlever_colonnes_vides(comb_nom_corr)
   ),
   
-  #Arranger colonne years et valeurs
+  #Arranger colonne years et valeurs pour qu'il n'y ait qu'une donnée par ligne pour chaque colonne
   tar_target(
     comb_unnest,
     unnest_col(comb_sans_vide, "years", "valeurs")
   ),
-  
+  #1.3 correction des donnéees
   #Vérifier que years et valeurs ont données positifs
   tar_target(
     comb_positif,
