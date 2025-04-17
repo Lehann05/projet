@@ -151,7 +151,7 @@ list(
   
   #Requête pour table sources
   tar_target(
-    creer_source,
+    creer_sources,
     "CREATE TABLE sources(
     title                   VARCHAR(500) PRIMARY KEY, 
     original_source         VARCHAR(50),
