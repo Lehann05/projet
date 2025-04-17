@@ -97,7 +97,7 @@ list(
   #Sources: séparer les colonnes voulues du dataframe et les stocker dans un objet intermédiaire
   tar_target(
     col_sources,
-    c('original_source', 'title', 'publisher', 'license', 'owner')
+    c("original_source", "title", "publisher", "license", "owner")
   ),
   
   tar_target(
@@ -113,7 +113,7 @@ list(
   
   tar_target(
     col_abondance,
-    c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude')
+    c("observed_scientific_name", "years", "unit", "valeurs", "title", "longitude", "latitude")
   ),
   
   #Abondance: séparer les colonnes voulues du dataframe
