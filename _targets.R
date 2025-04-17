@@ -97,7 +97,7 @@ list(
   #Sources: séparer les colonnes voulues du dataframe et les stocker dans un objet intermédiaire
   tar_target(
     sources_inter,
-    division_table(donnees_comb, c('original_source', 'title', 'publisher', 'license', 'owner'))
+    division_table(comb_finales, c('original_source', 'title', 'publisher', 'license', 'owner'))
   ),
   
   #Sources: enlever les lignes dupliquées (owner, license, publisher et original_source toujours similaire pour un même titre)
@@ -109,7 +109,7 @@ list(
   #Abondance: séparer les colonnes voulues du dataframe
   tar_target(
     abondance_inject,
-    division_table(donnees_comb, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
+    division_table(comb_finales, c('observed_scientific_name', 'years', 'unit', 'valeurs', 'title', 'longitude', 'latitude'))
   ),
   
   #Section 2: création de tables SQL et injection des dataframes taxonomie_inject, sources_inject et abondance_inject dans celles-ci
