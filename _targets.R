@@ -8,19 +8,19 @@ library(pbapply)
 library(tarchetypes)
 
 #Script R
-source('Unnest.R')
-source('Positif.R')
-source('Null.R')
-source('Separe_geom.R')
-source('Combine.R')
-source('Cor_geom.R')
-source('Cor_license.R')
-source('enl_col_vide.R')
-source('division_table.R')
-source('creer_table.R')
-source('open_corr.R')
-source('creer_figure.R')
-source('tracer_pop.R')
+source('R/Unnest.R')
+source('R/Positif.R')
+source('R/Null.R')
+source('R/Separe_geom.R')
+source('R/Combine.R')
+source('R/Cor_geom.R')
+source('R/Cor_license.R')
+source('R/enl_col_vide.R')
+source('R/division_table.R')
+source('R/creer_table.R')
+source('R/open_corr.R')
+source('R/creer_figure.R')
+source('R/tracer_pop.R')
 
 #Pipeline
 list(
@@ -296,6 +296,6 @@ list(
   #Section 5: Création du rapport finale avec Rmarkdown
   tar_render(
     rapport,
-    path = "rapport.Rmd"
+    path = "rapport/rapport.Rmd"
   )
 )
