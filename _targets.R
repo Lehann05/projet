@@ -236,8 +236,8 @@ list(
       pch = 16,                         # Style de point plein
       lwd = 2,                          # Épaisseur de la ligne
       xlab = "Année",
-      ylab = "Valeur moyenne",
-      main = "Moyenne annuelle des observations de Canis lupus"
+      ylab = "Nombre moyen de loup par 100 km2",
+      main = "Moyenne annuelle des observations de loups"
     )
   ),
   
@@ -252,8 +252,8 @@ list(
       pch = 16,                          # Type de point (16 = rond plein)
       lwd = 2,                           # Épaisseur de la ligne
       xlab = "Année",
-      ylab = "Valeur",
-      main = "Observations annuelles de Odocoileus virginianus"
+      ylab = "Nombre d'individu",
+      main = "Observations annuelles de cerfs de Virginie"
     )
   ),
   
