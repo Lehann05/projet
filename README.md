@@ -1,6 +1,6 @@
 # projet
 Travail de session
-├── data                  # Dossier de données
+├── series_temporelles    # Dossier de données
 │   ├── 1 à 267.csv       # Jeux de données
 │   └── taxonomie.csv     # Jeu de données
 │ 
@@ -16,9 +16,12 @@ Travail de session
 │   ├── Division_table.R  #Fonction utilisée comme targets, créer les tables de données pour les SQL
 │   ├── enl_col_vide.R    #Fonction utilisée comme targets, enlève les colonnes qui contiennent seulement des NA
 │   ├── open_corr.R       #Fonction utilisée comme targets, corrige les noms de colonnes
+│   ├── tracer_pop.R      #Fonction utilisée comme targets, permet de tracer le graphique combinant les loups et les cerfs 
 │   └── ScriptTout.R      #Script principal, à utiliser en cas de bug dans target
 │ 
 ├── _targets.R            # Fichier targets qui définit le pipeline
+│ 
+├── figures               # Fichier où les graphiques sont enregistrés 
 │ 
 ├── rapport/
 │   ├── rapport.Rmd
