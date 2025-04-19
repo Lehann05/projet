@@ -2,17 +2,17 @@
 unnest_col <- function(df, colname1, colname2, sep = ",") {
   # Étape 1 : Nettoyer les chaînes de caractères dans les deux colonnes
   
-  # Enlève les crochets [ ] des chaînes de caractères (ex: "[1985,1990]" → "1985,1990")
+  # Enlève les crochets [ ] des chaînes de caractères 
   df[[colname1]] <- gsub("\\[|\\]", "", df[[colname1]])
   df[[colname2]] <- gsub("\\[|\\]", "", df[[colname2]])
   
   # Étape 2 : Séparer les chaînes en listes d'éléments
   
-  # Transforme les chaînes séparées par des virgules en listes (ex: "1985,1990" → list("1985", "1990"))
+  # Transforme les chaînes séparées par des virgules en listes 
   list1 <- strsplit(df[[colname1]], sep)
   list2 <- strsplit(df[[colname2]], sep)
   
-  # Enlève les espaces autour de chaque élément (ex: " 1985 " → "1985")
+  # Enlève les espaces autour de chaque élément 
   list1 <- lapply(list1, trimws)
   list2 <- lapply(list2, trimws)
   
@@ -28,7 +28,7 @@ unnest_col <- function(df, colname1, colname2, sep = ",") {
       return(NULL)  # Ignore cette ligne
     }
     
-    # Récupère les autres colonnes (qui ne sont pas years/values) pour cette ligne
+    # Récupère les autres colonnes qui ne sont pas years ou values pour cette ligne
     others <- df[i, !(names(df) %in% c(colname1, colname2)), drop = FALSE]
     
     # Assemble les colonnes fixes avec les paires année/valeur
@@ -41,13 +41,12 @@ unnest_col <- function(df, colname1, colname2, sep = ",") {
   
   # Étape 4 : Conversion des colonnes year et value en numérique
   
-  # Convertit la colonne "year" en numérique (ex: "1985" → 1985)
+  # Convertit la colonne year en numérique 
   result$years <- as.numeric(result$years)
   
-  # Convertit la colonne "value" en numérique (ex: "52134.82" → 52134.82)
+  # Convertit la colonne value en numérique 
   result$valeurs <- as.numeric(result$valeurs)
   
-  # Retourne le résultat final
   return(result)
 }
 
