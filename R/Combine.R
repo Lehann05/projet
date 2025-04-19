@@ -8,7 +8,7 @@ combiner_csv <- function(dossier_principal, exclusion, nom_sortie, colonne, corr
                                recursive = TRUE, 
                                full.names = TRUE)
   
-  # Exclure ceux du dossier à exclure
+  # Exclure ceux du dossier à exclure (taxonomie)
   liste_fichiers <- liste_fichiers[!grepl(exclusion, liste_fichiers)]
   
   # Vérifier s'il reste des fichiers 
@@ -16,16 +16,17 @@ combiner_csv <- function(dossier_principal, exclusion, nom_sortie, colonne, corr
     stop("Pas trouvé de fichier")
   }
   
-  # Lire et combiner
+  # Lire et combiner les fichiers 
   donnees_combinees <- lapply(liste_fichiers, read.csv) %>%
     bind_rows()
   
-  # Exporter le résultat
+  # Exporter le résultat dans un nouveau fichier
   write.csv(donnees_combinees, file = nom_sortie, row.names = FALSE)
   
+  # Indiquer si la fonction à fonctionner
   cat(paste0("Succès : ", length(liste_fichiers), " fichiers combinés dans '", nom_sortie, "'\n"))
   
-  #Ouverture dossier et correction nom de colonne
+  # Ouverture dossier et correction nom de colonne
   data <- ouverture(nom_sortie, colonne, correction)
   return(data)
 }
