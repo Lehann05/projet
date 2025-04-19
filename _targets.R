@@ -19,7 +19,6 @@ source('R/enl_col_vide.R')
 source('R/division_table.R')
 source('R/creer_table.R')
 source('R/open_corr.R')
-source('R/creer_figure.R')
 source('R/tracer_pop.R')
 
 #Pipeline
