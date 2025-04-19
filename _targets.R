@@ -1,11 +1,11 @@
 #Dépendance
-library(targets)
+library(targets) # Version 1.1o.1 utilisée (versions plus récentes semblent poser problème)
 library(rmarkdown)
 library(tidyr)
 library(dplyr)
-library(RSQLite)
+library(RSQLite) # Version 2.3.9 
 library(pbapply)
-library(tarchetypes)
+library(tarchetypes) # Version 0.12.0 utilisée (versions plus récentes semblent poser problème) 
 
 #Script R
 source('R/Unnest.R')
