@@ -20,7 +20,7 @@ tracer_populations <- function(Cl_moyenne_norm, cerf_norm) {
     ylim = c(0, 1),
     xlab = "Année",
     ylab = "Valeurs normalisées pour les cerfs et les loups",
-    main = "Évolution des populations de Canis lupus et Odocoileus virginianus"
+    main = "Évolution des populations de loups et cerfs"
   )
   lines(
     cerf_norm$years,
@@ -36,7 +36,7 @@ tracer_populations <- function(Cl_moyenne_norm, cerf_norm) {
   plot.new()
   legend(
     "center",
-    legend = c("Canis lupus", "Odocoileus virginianus"),
+    legend = c("Loup", "Cerf de virginie"),
     col = c("steelblue", "orange"),
     pch = c(16, 17),
     lwd = 2,
