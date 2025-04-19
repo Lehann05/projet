@@ -24,7 +24,6 @@ Les données géographiques ont été visualisées pour permettre de s'assurer q
 ## Résultats 
 
 
-![Légende figure. \label{fig:plot1}]("file:///C:/Users/stpie/OneDrive/Documents/projet/Rplots.pdf"){width=50% height=40%}
 
 
 La figure 1 illustre la moyenne du nombre de loups pour un domaine de 100 km dans la région du Nouveau-Brunswick. Il est possible de remarquer que cette moyenne est en constante variation au fil des années. L’année la plus critique pour les loups était en 1994 où il est possible de voir une moyenne plus basse que 0.8 loups aux 100 km. L’année la plus prospère pour *Canis lupus* est en 1984 où l’on peut remarquer une moyenne de plus de 1.3 loups aux 100 km. 
@@ -32,6 +31,9 @@ La figure 1 illustre la moyenne du nombre de loups pour un domaine de 100 km dan
 
 La figure 2 illustre le nombre d’individus observés de cerfs de virginie par année, dans la région du Nouveau-Brunswick. On peut remarquer qu’à partir de 1985, le nombre d’individus est en constante baisse. La baisse des individus est assez drastique entre 1985 et 1990 et reste relativement constante entre 1990 et 2000. Par contre, en une année (2000 à 2001), il y a eu une baisse importante de plus de 25 000 individus. L’année la plus prospère pour les cerfs de virginie est donc en 1985, où le nombre observé dépasse les 250 000 individus, ce qui est assez impressionnant.
 
+``` {r graph_ClOv}
+tar_read(graph_ClOv)
+```
 
 La figure 3 démontre les valeurs normalisées des deux populations pour voir comment elles varient ensemble dans le temps. Il est possible de remarquer que la plupart du temps les deux espèces évoluent presque en même temps. C’est-à-dire que les deux étaient à leur maximum d’individus environ dans les mêmes années et lorsqu’il y a eu la baisse drastique des cerfs entre 1985 et 1990, les loups aussi ont vu leur nombre baisser. Cependant, cette tendance ne se suit plus de 1994 à 2000 où l’on voit que le nombre de loups augmente pendant que le nombre de cerf continue de diminuer. En somme, le graphique illustre bien une dynamique entre le prédateur et sa proie, puisque la plupart du temps, si les cerfs diminuent, les loups vont aussi diminuer peu de temps après. 
 
