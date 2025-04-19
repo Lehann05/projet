@@ -227,34 +227,44 @@ list(
   #Section 4: Création des figures à partir des données sélectionnées
   #4.1 Figure 1 -> variation de la moyenne du nombre de loups à travers le temps dans la zone d'étude
   tar_target(
-    graph_loup,
-    plot(
-      canis_lupus_data$years,
-      canis_lupus_data$moyenne_valeurs,
-      type = "o",                        # "o" = lignes + points
-      col = "steelblue",                # Couleur de la ligne et des points
-      pch = 16,                         # Style de point plein
-      lwd = 2,                          # Épaisseur de la ligne
-      xlab = "Année",
-      ylab = "Nombre moyen de loup par 100 km2",
-      main = "Moyenne annuelle des observations de loups"
-    )
+    fig1_loup,
+    {
+      png("figures/graph_loup.png", width = 800, height = 600)
+      plot(
+        canis_lupus_data$years,
+        canis_lupus_data$moyenne_valeurs,
+        type = "o",
+        col = "steelblue",
+        pch = 16,
+        lwd = 2,
+        xlab = "Année",
+        ylab = "Nombre moyen de loup par 100 km2",
+        main = "Moyenne annuelle des observations de loups"
+      )
+      dev.off()
+      "figures/graph_loup.png"
+    }
   ),
   
   #4.2 Figure 2 -> variation de l'abondance des cerfs de Virginie à travers le temps dans la zone d'étude
   tar_target(
-    graph_cerf,
-    plot(
-      odocoileus_virginianus_data$years,
-      odocoileus_virginianus_data$valeurs,
-      type = "o",                         # "o" = points + ligne
-      col = "orange",                 # Couleur de la ligne (et des points par défaut)
-      pch = 16,                          # Type de point (16 = rond plein)
-      lwd = 2,                           # Épaisseur de la ligne
-      xlab = "Année",
-      ylab = "Nombre d'individu",
-      main = "Observations annuelles de cerfs de Virginie"
-    )
+    fig2_cerf,
+    {
+      png("figures/graph_cerf.png", width = 800, height = 600)
+      plot(
+        odocoileus_virginianus_data$years,
+        odocoileus_virginianus_data$valeurs,
+        type = "o",
+        col = "orange",
+        pch = 16,
+        lwd = 2,
+        xlab = "Année",
+        ylab = "Nombre d'individu",
+        main = "Observations annuelles de cerfs de Virginie"
+      )
+      dev.off()
+      "figures/graph_cerf.png"
+    }
   ),
   
   #4.3 Figure 3 -> variation des valeurs d'abondance normalisées des cerfs et des loups à travers le temps dans la zone d'étude
@@ -274,8 +284,13 @@ list(
   
   #Réalisation de la figure
   tar_target(
-    graph_ClOv,
-    tracer_populations(Cl_norm, Ov_norm)
+    fig3_ClOv,
+    {
+      png("figures/graph_ClOv.png", width = 800, height = 600)
+      tracer_populations(Cl_norm, Ov_norm)
+      dev.off()
+      "figures/graph_ClOv.png"
+    }
   ),
   
   #Section 5: Création du rapport finale avec Rmarkdown
