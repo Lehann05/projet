@@ -263,7 +263,7 @@ tracer_populations <- function(Cl_moyenne_norm, cerf_norm) {
     lwd = 2,
     ylim = c(0, 1),
     xlab = "Année",
-    ylab = "Valeurs normalisées",
+    ylab = "Valeurs normalisées pour les cerfs et les loups",
     main = "Évolution des populations de Canis lupus et Odocoileus virginianus"
   )
   lines(
