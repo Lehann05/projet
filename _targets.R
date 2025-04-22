@@ -1,6 +1,6 @@
 #Dépendance
 #Au cas où le dossier _targets n'est pas vide 
-#tar_destroy()
+tar_destroy()
 
 #Ouvrir les librairies utiles 
 library(targets) # Version 1.1o.1 utilisée (versions plus récentes semblent poser problème)
