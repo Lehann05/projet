@@ -1,6 +1,10 @@
 #Dépendance
 #Au cas où le dossier _targets n'est pas vide 
-tar_destroy()
+#tar_destroy()
+
+#Si tar_destroy() ne fonctionne pas 
+#targets::tar_delete()
+#unlink("_targets", recursive = TRUE)
 
 #Ouvrir les librairies utiles 
 library(targets) # Version 1.1o.1 utilisée (versions plus récentes semblent poser problème)
