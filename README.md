@@ -3,6 +3,7 @@ Travail de session
  │   ├── 1 à 267.csv       # Jeux de données
  │   └── taxonomie.csv     # Jeu de données
  │ 
+ ├── R
  │   ├── division_table.R  #Fonction utilisée comme targets, créer les tables de données pour les SQL
  │   ├── enl_col_vide.R    #Fonction utilisée comme targets, enlève les colonnes qui contiennent seulement des NA
  │   ├── open_corr.R       #Fonction utilisée comme targets, corrige les noms de colonnes
